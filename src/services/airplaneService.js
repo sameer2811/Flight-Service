@@ -1,6 +1,12 @@
 const {
     response
 } = require("express");
+const {
+    AppError
+} = require("../utils/errors");
+const {
+    StatusCodes
+} = require("http-status-codes");
 
 class AirplaneService {
     constructor(repository) {
@@ -12,8 +18,7 @@ class AirplaneService {
             const response = await this.repository.create(data);
             return response;
         } catch (error) {
-            console.log("Got an error in create Airplane ", error);
-            throw error;
+            throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, error);
         }
     }
 }
