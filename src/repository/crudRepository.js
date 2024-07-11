@@ -1,69 +1,57 @@
+const {
+    StatusCodes
+} = require("http-status-codes");
+const {
+    AppError
+} = require("../utils/errors");
+
 class CrudRepository {
+
     constructor(model) {
         this.model = model;
     }
 
     async create(data) {
-        try {
-            const response = await this.model.create(data);
-            return response;
-        } catch (error) {
-            console.log(`error Occured in the Create ${error}`);
-            throw error;
-        }
+        const response = await this.model.create(data);
+        return response;
     }
     async destroy(data) {
-        try {
-            const response = await this.model.destroy({
-                where: {
-                    id: data
-                }
-            });
-            return response;
-        } catch (error) {
-            console.log(`error Occured in the Destroy ${error}`);
-            throw error;
+        const response = await this.model.destroy({
+            where: {
+                id: data
+            }
+        });
+        if (!response) {
+            throw new AppError(StatusCodes.NOT_FOUND, "Not Able to find the resource");
         }
+        return response;
     }
 
     async get(data) {
-        try {
-            const response = await this.model.findByPk({
-                where: {
-                    id: data
-                }
-            });
-            return response;
-        } catch (error) {
-            console.log(`error Occured in the get ${error}`);
-            throw error;
+        const response = await this.model.findByPk(data);
+        if (!response) {
+            throw new AppError(StatusCodes.NOT_FOUND, "Not Able to find the resource");
         }
+        return response;
     }
 
     async getAll() {
-        try {
-            const response = await this.model.findAll();
-            return response;
-        } catch (error) {
-            console.log(`error Occured in the getAll ${error}`);
-            throw error;
-        }
+        const response = await this.model.findAll();
+        return response;
     }
 
     async update(id, data) {
-        try {
-            const response = await this.model.update(data, {
-                where: {
-                    id: id
-                }
-            });
-            return response;
-        } catch (error) {
-            console.log(`error Occured in the Update ${error}`);
-            throw error;
+        const response = await this.model.update(data, {
+            where: {
+                id: id
+            }
+        });
+        console.log(response);
+        if (!response || parseInt(response[0]) === 0) {
+            throw new AppError(StatusCodes.NOT_FOUND, "Not Able to find the resource you want to update");
         }
+        return response;
     }
 }
-
 
 module.exports = CrudRepository;
