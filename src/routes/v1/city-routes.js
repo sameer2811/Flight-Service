@@ -4,7 +4,7 @@ const {
 } = require('../../controller');
 const {
     checkCityValidation
-} = require('../../validators/City-validator');
+} = require('../../validators/city-validator');
 const cityRouter = express.Router();
 
 
