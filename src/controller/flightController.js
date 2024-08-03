@@ -24,6 +24,18 @@ async function createFlightController(req, res) {
         return res.status(error.status).json(errorResponse);
     }
 }
+
+async function getAllFlightsController(req, res) {
+    try {
+        const response = await flightService.getAllFlights(req.query);
+        successResponse.data = response;
+        return res.status(StatusCodes.OK).json(successResponse);
+    } catch (error) {
+        errorResponse.error = error;
+        return res.status(error.status).json(errorResponse);
+    }
+}
 module.exports = {
     createFlightController,
+    getAllFlightsController
 };
