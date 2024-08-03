@@ -57,6 +57,7 @@ class FlightService {
             const response = await this.repository.getAllFlights(filterData);
             return response;
         } catch (error) {
+            console.log(error);
             throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, error);
         }
     }
