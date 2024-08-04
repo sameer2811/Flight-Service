@@ -42,11 +42,13 @@ class FlightRepository extends CrudRepository {
             await flight.decrement('totalSeats', {
                 by: seatCount
             });
+            await flight.reload();
             return flight;
         } else {
             await flight.increment('totalSeats', {
                 by: seatCount
             });
+            await flight.reload();
             return flight;
         }
     }
