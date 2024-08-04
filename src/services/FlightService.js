@@ -62,5 +62,32 @@ class FlightService {
         }
     }
 
+    async getFlightById(id) {
+        try {
+            const response = await this.repository.get(id);
+            return response;
+        } catch (error) {
+            if (error.status === StatusCodes.NOT_FOUND) {
+                throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Cannot Found the requested Flight Id");
+            }
+            throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Cannot fetch the data of this flight ID . Please try again");
+        }
+    }
+
+    async updateRemainingSeats(flightId, seatCount, decrease) {
+        try {
+            const response = await this.repository.updateRemainingSeats(flightId, seatCount, decrease);
+            return response;
+        } catch (error) {
+            if (error.name === "SequelizeValidationError") {
+                let explanations = [];
+                error.errors.forEach(element => {
+                    explanations.push(element);
+                });
+                throw new AppError(StatusCodes.BAD_REQUEST, explanations);
+            }
+            throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, error);
+        }
+    }
 }
 module.exports = FlightService;

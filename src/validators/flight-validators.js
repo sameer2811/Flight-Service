@@ -40,13 +40,10 @@ async function checkFlightValidation(req, res, next) {
         errorResponse.description = 'totalSeats property is not defined properly.';
         return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
     }
-
     if (!compareTime(req.body.arrivalTime, req.body.departureTime)) {
         errorResponse.description = 'arrivalTime  is not greater then deaprtureTime.';
         return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
-
     }
-
     next();
 }
 

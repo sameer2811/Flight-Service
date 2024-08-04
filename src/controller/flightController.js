@@ -35,7 +35,31 @@ async function getAllFlightsController(req, res) {
         return res.status(error.status).json(errorResponse);
     }
 }
+
+async function getFlight(req, res) {
+    try {
+        const response = await flightService.getFlightById(req.params.id);
+        successResponse.data = response;
+        return res.status(StatusCodes.OK).json(successResponse);
+    } catch (error) {
+        errorResponse.error = error;
+        return res.status(error.status).json(errorResponse);
+    }
+}
+
+async function updateRemainingSeats(req, res) {
+    try {
+        const response = await flightService.updateRemainingSeats(req.params.id, req.body.seats, req.body.dec);
+        successResponse.data = response;
+        return res.status(StatusCodes.OK).json(successResponse);
+    } catch (error) {
+        errorResponse.error = error;
+        return res.status(error.status).json(errorResponse);
+    }
+}
 module.exports = {
     createFlightController,
-    getAllFlightsController
+    getAllFlightsController,
+    getFlight,
+    updateRemainingSeats
 };

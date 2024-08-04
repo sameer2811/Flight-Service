@@ -1,5 +1,5 @@
 const {
-    Flight,
+    Flight
 } = require("../models");
 
 const {
@@ -34,6 +34,21 @@ class FlightRepository extends CrudRepository {
         });
         return response;
     }
-}
 
+    async updateRemainingSeats(flightId, seatCount, decrease) {
+        seatCount = parseInt(seatCount);
+        const flight = await Flight.findByPk(flightId);
+        if (decrease) {
+            await flight.decrement('totalSeats', {
+                by: seatCount
+            });
+            return flight;
+        } else {
+            await flight.increment('totalSeats', {
+                by: seatCount
+            });
+            return flight;
+        }
+    }
+}
 module.exports = FlightRepository;
